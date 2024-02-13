@@ -11,7 +11,7 @@ namespace PhoneBook
         static void Main(string[] args)
         {
             SelectPage selectPage = new SelectPage();
-            selectPage.Select();
+            selectPage.Rehber();
 
             Console.ReadLine();
         }

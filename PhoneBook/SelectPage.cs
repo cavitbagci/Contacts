@@ -8,7 +8,17 @@ namespace PhoneBook
 {
     internal class SelectPage
     {
-        private List<> kisiler
+        private List<Person> kisiler;
+        
+        public void Rehber()
+        {
+            kisiler = new List<Person>()
+            {
+                new Person("Cavit","Bağcı",111111),
+                new Person("Irmak", "Taskin",222222)
+            };
+            Select();
+        }
         public void Select()
         {
 
@@ -30,7 +40,7 @@ namespace PhoneBook
                         continue1 = false;
                         break;
                     case 1:
-                        Console.WriteLine("Rehber Görüntüleniyor:");
+                        RehberGoruntule();
                         break;
                     case 2:
                         Console.WriteLine("Kişi eklenecek");
@@ -46,8 +56,17 @@ namespace PhoneBook
                         break;
                 }
             }
+        }
 
+        private void RehberGoruntule()
+        {
+            Console.WriteLine("Rehber Görüntüleniyor:");
+            Console.WriteLine("************************");
 
+            foreach (Person person in kisiler)
+            {
+                Console.WriteLine("{0} {1} : {2}", person.FirstName,person.LastName,person.PhoneNumber);
+            }
         }
     }
 }
