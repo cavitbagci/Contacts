@@ -13,7 +13,7 @@ namespace PhoneBook
             SelectPage selectPage = new SelectPage();
             selectPage.Rehber();
 
-            Console.ReadLine();
+           
         }
     }
 }
