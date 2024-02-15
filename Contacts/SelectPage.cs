@@ -15,7 +15,11 @@ namespace Contacts
             kisiler = new List<Person>()
             {
                 new Person("Cavit","Bağcı",111111),
-                new Person("Irmak", "Taskin",222222)
+                new Person("Irmak", "Taskin",222222),
+                new Person("Ahmet","Ahmetoğlu",333333),
+                new Person("Mehmet","Mehmetçocuğu",444444),
+                new Person("Ayşe","Yılmaz",555555),
+                new Person("Fatma","Aras",555555),
             };
             Select();
         }
@@ -27,9 +31,10 @@ namespace Contacts
             {
                 Console.WriteLine("Yapmak istediğiniz işlemi seçiniz");
                 Console.WriteLine("(1)-Rehberi Görüntüle");
-                Console.WriteLine("(2)-Rehbere Kişi Ekle");
-                Console.WriteLine("(3)-Rehberdeki Kişiyi Sil");
-                Console.WriteLine("(4)-Rehberdeki Kişiyi Güncelle");
+                Console.WriteLine("(2)-Rehberde Kişi Ara");
+                Console.WriteLine("(3)-Rehbere Kişi Ekle");
+                Console.WriteLine("(4)-Rehberdeki Kişiyi Sil");
+                Console.WriteLine("(5)-Rehberdeki Kişiyi Güncelle");
                 Console.WriteLine("(0)-Uygulamadan Çıkmak İçin");
 
                 int select = int.Parse(Console.ReadLine());
@@ -43,15 +48,16 @@ namespace Contacts
                         RehberGoruntule();
                         break;
                     case 2:
-                        Console.WriteLine("Kişi eklenecek");
-                        RehbereEkle();
+                        RehberdeAra();
                         break;
                     case 3:
-                        Console.WriteLine("Kişi silinecek");
-                        RehberdenSil();
+                        RehbereEkle();
                         break;
                     case 4:
-                        Console.WriteLine("Kişi güncellenecek");
+                        RehberdenSil();
+                        break;
+                    case 5:
+                        RehberGuncelle();
                         break;
                     default:
                         Console.WriteLine("Yanlış seçim yaptınız lütfen 1 ile 4 arasında bir değer giriniz");
@@ -82,24 +88,79 @@ namespace Contacts
             Console.Write("Telefon Numarası Giriniz: ");
             int PhoneNumber = int.Parse(Console.ReadLine());
 
-            kisiler.Add(new Person(FirstName, LastName, PhoneNumber));
+            Person kisiekle = new Person(FirstName, LastName, PhoneNumber);
+            kisiler.Add(kisiekle);
+        }
 
+        private void RehberdeAra()
+        {
+            Console.WriteLine("İsim/soyisime göre arama yapmak için: (1) Telefon numarasına göre arama yapmak için: (2)");
+            int secim = int.Parse(Console.ReadLine());
+            switch (secim)
+            {
+                case 1:
+                    Console.WriteLine("İsim/Soyisim giriniz.");
+                    string aranan = Console.ReadLine();
+
+                    List<Person> bulunanKisiler = kisiler.Where(Person =>
+                    Person.FirstName.Contains(aranan) ||
+                    Person.LastName.Contains(aranan)).ToList();
+
+                    foreach(Person person in bulunanKisiler)
+                    {
+                        Console.WriteLine("İsim : {0} Soyisim : {1} | Telefon Numarası : {2}", person.FirstName, person.LastName, person.PhoneNumber);
+                    }
+
+                    break;
+                case 2:
+                    break;
+            }
         }
 
         private void RehberdenSil()
         {
             Console.WriteLine("Silmek istediğiniz kişinin ismini ya da soyismini yazınız.");
             string aranan = Console.ReadLine();
+
             Person bulunanKisi = kisiler.FirstOrDefault(Person =>
             Person.FirstName.Equals(aranan, StringComparison.OrdinalIgnoreCase) ||
             Person.LastName.Equals(aranan, StringComparison.OrdinalIgnoreCase));
-            Console.WriteLine("{0} Rehberinizden siliniyor...", aranan);
-            kisiler.Remove(bulunanKisi);
+
+            if (bulunanKisi == null)
+            {
+                Console.WriteLine("Girdiğiniz isim rehberde yok");
+            }
+            else
+            {
+                Console.WriteLine("{0} isimli kişi rehberinizden silinecek işlemi onaylıyor musunuz? (Y/N)", aranan);
+                string silmeOnay = Console.ReadLine();
+                switch (silmeOnay)
+                {
+                    case "y":
+                        Console.WriteLine("{0} Rehberinizden siliniyor...", aranan);
+                        kisiler.Remove(bulunanKisi);
+                        break;
+                    case "n":
+                        Console.WriteLine("İşlem iptal edilmiştir.");
+                        break;
+                }
+            }
         }
 
         private void RehberGuncelle()
         {
-           
+            Console.WriteLine("Güncellemek istediğiniz kişinin ismini yazınız.");
+            string GuncellenecekKisi = Console.ReadLine();
+
+            Person bulunanKisi = kisiler.FirstOrDefault(Person =>
+            Person.FirstName.Equals(GuncellenecekKisi, StringComparison.OrdinalIgnoreCase) ||
+            Person.LastName.Equals(GuncellenecekKisi, StringComparison.OrdinalIgnoreCase));
+
+            Console.WriteLine("Yeni numarayı yazınız.");
+            int newNumber = int.Parse(Console.ReadLine());
+            bulunanKisi.PhoneNumber = newNumber;
+
+            Console.WriteLine("{0} Kişinin numarası güncellenmiştir.", GuncellenecekKisi);
         }
     }
 }
