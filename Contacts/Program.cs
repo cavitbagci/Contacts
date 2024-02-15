@@ -12,7 +12,6 @@ namespace Contacts
         {
             SelectPage selectPage = new SelectPage();
             selectPage.Rehber();
-
         }
     }
 }

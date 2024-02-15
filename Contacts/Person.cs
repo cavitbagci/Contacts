@@ -12,7 +12,6 @@ namespace Contacts
         public string LastName { get; set; }
         public int PhoneNumber { get; set; }
 
-
         public Person(string firstName, string lastName, int phoneNumber)
         {
             FirstName = firstName;
