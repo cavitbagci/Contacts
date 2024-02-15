@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhoneBook
+namespace Contacts
 {
     internal class Program
     {
@@ -12,8 +12,6 @@ namespace PhoneBook
         {
             SelectPage selectPage = new SelectPage();
             selectPage.Rehber();
-
-           
         }
     }
 }
