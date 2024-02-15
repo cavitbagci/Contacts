@@ -19,9 +19,9 @@ namespace Contacts
             };
             Select();
         }
+
         public void Select()
         {
-
             bool continue1 = true;
             while (continue1)
             {
