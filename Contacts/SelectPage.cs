@@ -103,16 +103,22 @@ namespace Contacts
                     string aranan = Console.ReadLine();
 
                     List<Person> bulunanKisiler = kisiler.Where(Person =>
-                    Person.FirstName.Contains(aranan) ||
-                    Person.LastName.Contains(aranan)).ToList();
+                    Person.FirstName.IndexOf(aranan, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    Person.LastName.IndexOf(aranan, StringComparison.OrdinalIgnoreCase) >= 0).ToList();
 
-                    foreach(Person person in bulunanKisiler)
+                    foreach (Person person in bulunanKisiler)
                     {
                         Console.WriteLine("İsim : {0} Soyisim : {1} | Telefon Numarası : {2}", person.FirstName, person.LastName, person.PhoneNumber);
                     }
-
                     break;
                 case 2:
+                    Console.WriteLine("Telefon numarası giriniz.");
+                    int telno = int.Parse(Console.ReadLine());
+
+                    Person bulunanKisilerWNo = kisiler.FirstOrDefault(Person =>
+                    Person.PhoneNumber.Equals(telno));
+
+                    Console.WriteLine("İsim : {0} Soyisim : {1} | Telefon Numarası : {2}", bulunanKisilerWNo.FirstName, bulunanKisilerWNo.LastName, bulunanKisilerWNo.PhoneNumber);
                     break;
             }
         }
@@ -156,11 +162,28 @@ namespace Contacts
             Person.FirstName.Equals(GuncellenecekKisi, StringComparison.OrdinalIgnoreCase) ||
             Person.LastName.Equals(GuncellenecekKisi, StringComparison.OrdinalIgnoreCase));
 
-            Console.WriteLine("Yeni numarayı yazınız.");
-            int newNumber = int.Parse(Console.ReadLine());
-            bulunanKisi.PhoneNumber = newNumber;
+            if (bulunanKisi == null)
+            {
+                Console.WriteLine("Böyle birisi rehberinizde yok.");
+            }
+            else
+            {
+                Console.WriteLine("Yeni numarayı yazınız.");
+                int newNumber = int.Parse(Console.ReadLine());
+                Console.WriteLine("{0} isimli kişinin numarası {1}'den {2} olacaktır onaylıyor musunuz? (Y/N)", bulunanKisi.FirstName, bulunanKisi.PhoneNumber, newNumber);
 
-            Console.WriteLine("{0} Kişinin numarası güncellenmiştir.", GuncellenecekKisi);
+                string guncellemeOnay = Console.ReadLine();
+                switch (guncellemeOnay)
+                {
+                    case "y":
+                        bulunanKisi.PhoneNumber = newNumber;
+                        Console.WriteLine("{0} Kişinin numarası güncellenmiştir.", bulunanKisi.FirstName);
+                        break;
+                    case "n":
+                        Console.WriteLine("İşlem iptal edilmiştir.");
+                        break;
+                }
+            }
         }
     }
 }
